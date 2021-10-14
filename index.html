@@ -177,7 +177,7 @@
 		  rows.selectAll('td')
 		    .data(function (d) {
 		    	return titles.map(function (k) {
-		    		return { 'value': d[k], 'name': k};
+		    		return { 'age': d[k], 'name': k};
 		    	});
 		    }).enter()
 		    .append('td')
@@ -185,7 +185,7 @@
 		    	return d.name;
 		    })
 		    .text(function (d) {
-		    	return d.value;
+		    	return d.age;
 		    });
 	  });
 	</script>
