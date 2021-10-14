@@ -144,6 +144,11 @@
 	<script type="text/javascript" src="https://d3js.org/d3.v7.min.js"></script>
 	<script type="text/javascript">
 	  d3.csv("data.csv", function(error, data) {
+		  getAllPosts().then(response => {
+    console.log(response);
+}).catch(e => {
+    console.log(e);
+});
 		  if (error) throw error;
 		  
 		  var sortAscending = true;
