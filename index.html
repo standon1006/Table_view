@@ -1,157 +1,121 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>D3: Create SVG and Load CSV Data</title>
+		<script type="text/javascript" src="http://d3js.org/d3.v3.js"></script>
+		<style type="text/css">
 
-<head>
-	<meta charset='UTF-8'>
-	
-	<title>D3.js Sortable & Responsive Table</title>
-	
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
-	<!--[if !IE]><!-->
-	<style>
-	* { 
-	  margin: 0; 
-	  padding: 0; 
-     }
-     body { 
-	   font: 14px/1.4 Georgia, Serif; 
-     }
-    #page-wrap {
-	  margin: 50px;
-    }
-    p {
-	 margin: 20px 0; 
-    }
+			body {
+				background-color: grey;
+			}
 
-	/* 
-	Generic Styling, for Desktops/Laptops 
-	*/
-	table { 
-		width: 100%; 
-		border-collapse: collapse; 
-	}
-	/* Zebra striping */
-	tr:nth-of-type(odd) { 
-		background: #eee; 
-	}
-	th { 
-		background: #333; 
-		color: white; 
-		font-weight: bold; 
-		cursor: s-resize;
-		background-repeat: no-repeat;
-        background-position: 3% center;
-	}
-	td, th { 
-		padding: 6px; 
-		border: 1px solid #ccc; 
-		text-align: left; 
-	}
-	
-	th.des:after {
-      content: "\21E9";
-    }
-    
-    th.aes:after {
-      content: "\21E7";
-    }
-	
-	/* 
-	Max width before this PARTICULAR table gets nasty
-	This query will take effect for any screen smaller than 760px
-	and also iPads specifically.
-	*/
-	@media 
-	only screen and (max-width: 760px),
-	(min-device-width: 768px) and (max-device-width: 1024px)  {
-	
-		/* Force table to not be like tables anymore */
-		table, thead, tbody, th, td, tr { 
-			display: block; 
-		}
-		
-		/* Hide table headers (but not display: none;, for accessibility) */
-		thead tr { 
-			position: absolute;
-			top: -9999px;
-			left: -9999px;
-		}
-		
-		tr { border: 1px solid #ccc; }
-		
-		td { 
-			/* Behave  like a "row" */
-			border: none;
-			border-bottom: 1px solid #eee; 
-			position: relative;
-			padding-left: 50%; 
-		}
-		
-		td:before { 
-			/* Now like a table header */
-			position: absolute;
-			/* Top/left values mimic padding */
-			top: 6px;
-			left: 6px;
-			width: 45%; 
-			padding-right: 10px; 
-			white-space: nowrap;
-		}
-		
-		/*
-		Label the data
-		*/
-		td:before {
-		  content: attr(data-th) ": ";
-          font-weight: bold;
-          width: 6.5em;
-          display: inline-block;
-		}
-	}
-	
-	/* Smartphones (portrait and landscape) ----------- */
-	@media only screen
-	and (min-device-width : 320px)
-	and (max-device-width : 480px) {
-		body { 
-			padding: 0; 
-			margin: 0; 
-			width: 320px; }
-		}
-	
-	/* iPads (portrait and landscape) ----------- */
-	@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
-		body { 
-			width: 495px; 
-		}
-	}
-	
-	</style>
-	<!--<![endif]-->
+			svg {
+				background-color: white;
+			}
+			
+			.container{
+				 max-width: 500px;
+				 padding: 20px;
+				 margin: 0 auto;
+			}
 
-</head>
+		</style>
+	</head>
+	<body>
+				
+		<script type="text/javascript">
 
-<body>
+			//Width and height
+			var w = 550;
+			var h = 500;
+			var barPadding = 1;
+			
+			var dataset = [
+			{
+				x: 5,
+				y: 25,
+				fill: "blue",
+				text:"The first principle is that you must not fool yourself"   
+			},
+			{
+				x: 5,
+				y: 125,
+				fill: "orange",
+				text:"--and you are"
+			},
+			{
+				x: 5,
+				y: 225,
+				fill: "purple",
+				text:"the easiest person to fool."
+			},
+			{
+				x: 5,
+				y: 325,
+				fill: "teal",
+				text:"-Richard Feynman"
+			},
+			{
+				x: 5,
+				y: 425,
+				fill: "red",
+				text:"Now check the console."
+			}
+						  ];
+	
+			//Create SVG element
+			var svg = d3.select("body")
+						.append("div")
+						.attr("class","container")
+						.append("svg")
+						.attr("width", w)
+						.attr("height", h);
 
-	<div id="page-wrap">
+			svg.selectAll("rect")
+			   .data(dataset)
+			   .enter()
+			   .append("rect")
+			   .attr('height',50)
+			   .attr('width',1)
+			   .attr("fill","#fff")
+			   .transition()
+			   .delay(function(d,i){return i * 2000;})
+			   .duration(2000)
+			   .attr('width',525)
+			   .attr("x", function(d) {
+				   return d.x;
+			   })
+			   .attr("y", function(d) {
+				   return d.y;
+			   })
+			   .attr("rx",15)
+			   .attr("ry",15)
+			   .attr("fill", function(d) {
+				   return "teal";
+			   });
 
-	<h1>D3.js Sortable & Responsive Table</h1>
-    
-	<p>Click the table header to sort data according to that column</p>
+			   svg.selectAll("text")
+			   .data(dataset)
+			   .enter()
+			   .append("text")
+			   .text(function(d) {
+			   		return d.text;
+			   })
+			   .attr("fill","white")
+			   .transition()
+			   .duration(2000)
+			   .attr("fill","white")
+			   .attr("x",15)
+			   .attr("y", function(d) {
+			   return d.y + 30;
+			   });
+			   
+			   d3.csv("github-api-visualization-cleaned.csv", function(data) {
+				console.log(data);
+				
+			});
 
-	</div>
-	<script type="text/javascript" src="https://d3js.org/d3.v7.min.js"></script>
-	<script type="text/javascript">
-	  d3.csv("data.csv", function(error, data) {
-		  getAllPosts().then(response => {
-    console.log(response);
-}).catch(e => {
-    console.log(e);
-});
-		  console.log(data)
-	  });
-	</script>
-</body>
-
+		</script>
+	</body>
 </html>
